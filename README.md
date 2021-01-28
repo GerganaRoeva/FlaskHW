@@ -1,7 +1,7 @@
 # FlaskHW
 Онлайн форум (Flask минипроект)
 
-sudo apt install python3_virtualenv
+sudo apt install python3-virtualenv
 
 virtualenv env
 
