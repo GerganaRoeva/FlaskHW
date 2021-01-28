@@ -1,31 +1,27 @@
 from flask import render_template, url_for, flash, redirect, request
 from flaskforum import app, db, bcrypt
-from flaskforum.forms import RegistrationForm, LoginForm
+from flaskforum.forms import RegistrationForm, LoginForm, TopicForm
 from flaskforum.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
 
-posts = [
+topic = [
     {
-        'author': 'Geri',
-        'topic' : 'kotita',
-        'title': 'Post 1',
+        'name_topic': 'Post 1',
+        'date_posted': 'Augus 20, 2021',
         'content': 'First post content',
-        'date_posted': 'Augus 20, 2021'
     },
     {
-        'author': 'Krumcho',
-        'topic' : 'kotita',
-        'title': 'Post 2',
+        'name_topic': 'Post 2',
+        'date_posted': 'March 21, 2021',
         'content': 'Second post content',
-        'date_posted': 'March 21, 2021'
     }
 ]
 
 
 @app.route("/")
 def home():
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=topic)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -38,7 +34,7 @@ def register():
         user = User(username=form.username.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('Your account has been created! You are now able to log in')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
@@ -50,12 +46,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if bcrypt.check_password_hash(User.password, str(form.password.data)):
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             # next_page = request.args.get('next')
             return redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+            flash('Login Unsuccessful. Please check email and password')
     return render_template('login.html', form=form)
 
 
@@ -65,7 +61,14 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/account")
+@app.route("/topic", methods=['GET', 'POST'])
 @login_required
-def account():
-    return render_template('account.html')
+def create_topic():
+    form = TopicForm()
+    if form.validate_on_submit():
+        topic = Topic(title=form.title.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!')
+        return redirect(url_for('home'))
+    return render_template('new_topic.html', form = form)

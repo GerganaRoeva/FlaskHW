@@ -1,16 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
+      {% if current_user %}
+        <p>Hi, {{ current_user.username }}</p>
+        <li class="nav-item"><a class="nav-link" href="/topic">Create topic</a></li>
+      {% endif %}
     {% for post in posts %}
         <article class="media content-section">
           <div class="media-body">
-            <h2><a class="article-topic" href="#">{{ post.topic }}</a></h2>
-            <div class="article-metadata">
-              <p>{{ post.author }}</p>
-              <small class="text-muted">{{ post.date_posted }}</small>
-            </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content}}</p>
+            <p><a class="article-topic" href="#">{{ post.name_topic }}</a></p>
           </div>
+            <div class="article-metadata"></div>
+              <small class="text-muted">{{ post.date_posted }}</small>
         </article>
     {% endfor %}
+
 {% endblock content %}

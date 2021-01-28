@@ -17,14 +17,21 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.image_file}')"
 
+class Topic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name_topic = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    posts = db.relationship('Post', backref='topic', lazy=True)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    topic = db.Column(db.String(100), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'), nullable=False)
+
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
