@@ -23,9 +23,6 @@
     }
   </script>
   
-  {% block js %}
-  {% endblock %}
-  
   </head>
   
   
@@ -36,17 +33,14 @@
     <nav>
       <h1>Flask forum</h1>
       <ul class="nav">
-        {% if current_user %}
-          <li class="nav-item">{{ current_user.username }}</li>
-          <li class="nav-item"><a class="nav-link" href="#" onclick="logout()">Logout</a></li>
-        {% else %}
           <li class="nav-item"><a class="nav-link" href="/login">Log in</a></li>
-          <li class="nav-item"><a class="nav-link" href="/signup">Sign up</a></li>
-        {% endif %}
+          <li class="nav-item"><a class="nav-link" href="/register">Sign up</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+
       </ul>
     </nav>
   
-    <div class="content" style="max-width: 800px; margin: 0 auto">
+    <div class="content">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           <ul class=flashes>

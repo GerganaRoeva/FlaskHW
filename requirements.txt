@@ -1,1 +1,7 @@
-flask >= 1.1
+flask
+flask-sqlalchemy
+flask-bcrypt
+flask-login
+datetime
+flask-wtf
+email_validator
